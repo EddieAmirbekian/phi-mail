@@ -28,18 +28,45 @@ const UserAuthForm: FC<UserAuthFormProps> = ({ className, ...props }) => {
     }
   };
 
+  const loginWithFacebook = async () => {
+    setIsLoading(true);
+
+    try {
+      await signIn("facebook");
+    } catch (error) {
+      toast({
+        title: "There was a problem",
+        description: "There was an error logging in with Facebook",
+        variant: "destructive"
+      })
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <div {...props} className={cn("flex justify-center", className)}>
+    <div {...props} className={cn("flex flex-col items-center space-y-2", className)}>
       <Button
         size="sm"
-        className="w-full"
+        className="w-1/2 flex items-center"
         onClick={loginWithGoogle}
         isLoading={isLoading}
       >
         {isLoading ? null : (
-          <Icons.google className="h-4 w-4 mr-2 fill-white" />
+          <Icons.google className="h-4 w-4 mr-3 fill-white" />
         )}
-        Google
+        <span className="font-medium">Google</span>
+      </Button>
+      <Button
+        size="sm"
+        className="w-1/2 flex items-center"
+        onClick={loginWithFacebook}
+        isLoading={isLoading}
+      >
+        {isLoading ? null : (
+          <Icons.facebook className="h-5 w-5 mr-3 stroke-[1.5px]" />
+        )}
+        <span className="font-medium">Facebook</span>
       </Button>
     </div>
   );
